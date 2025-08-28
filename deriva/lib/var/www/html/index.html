@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DERIVA Installation Landing Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+        }
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #06124c;
+        }
+        .links {
+            margin-top: 20px;
+        }
+        .links a {
+            display: block;
+            margin: 10px 0;
+            color: #0056a3;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Containerized DERIVA!</h1>
+        <p>This is the landing page for a new containerized DERIVA installation. If you are seeing this page it is
+            likely that the web server is up and running. Note that depending on the launch deployment options,
+            the rest of the system may or may not be fully configured yet.</p>
+
+        <div class="links">
+            <p><a href="/ermrest/">🔧  Test ERMrest</a></p>
+            <p><a href="/authn/login">🔐  OIDC Login</a>
+            <p><a id="oidc-logout" href="/authn/logout">↩️ OIDC Logout</a></p>
+            <p><a href="/authn/session">🧑‍💻  User Session Information</a></p>
+            <p><a href="/chaise/recordset/#1/Data:Collection@sort(RID)">🛢️  Sample Catalog</a>Test environment only</p>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+document.addEventListener('click', function (e) {
+  const link = e.target.closest('a#oidc-logout');
+  if (!link) return;
+
+  // Let modified clicks behave normally (new tab, etc.)
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+  e.preventDefault();
+
+  const href = link.href;
+
+  fetch(href, {
+    method: 'GET',
+    credentials: 'include',
+    headers: { 'Accept': 'application/json' }
+  }).then(async (res) => {
+    const ct = (res.headers.get('content-type') || '').toLowerCase();
+
+    if (res.ok && ct.includes('application/json')) {
+      try {
+        const data = await res.json();
+        if (data && typeof data.logout_url === 'string' && data.logout_url) {
+          // Follow the OP's logout URL
+          window.location.assign(data.logout_url);
+          return;
+        }
+      } catch (_) { /* fall through to normal nav */ }
+    }
+
+    // Not 200 JSON, or missing logout_url → behave like a normal link
+    window.location.assign(href);
+  }).catch(() => {
+    // Network error → behave like a normal link
+    window.location.assign(href);
+  });
+});
+</script>

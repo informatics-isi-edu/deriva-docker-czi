@@ -1,0 +1,31 @@
+{
+  "default": {
+    "issuer": "https://${OKTA_HOST}",
+    "discovery_url": "https://${OKTA_HOST}/.well-known/openid-configuration",
+    "logout_url": "https://${OKTA_HOST}/oauth2/v1/logout",
+    "scopes": "openid email profile groups",
+    "client_secret_file": "secrets/okta_client_secret.json"
+  },
+  "globus": {
+    "issuer": "https://auth.globus.org",
+    "discovery_url": "https://auth.globus.org/.well-known/openid-configuration",
+    "introspect_url": "https://auth.globus.org/v2/oauth2/token/introspect",
+    "logout_url": "https://auth.globus.org/v2/web/logout",
+    "logout_url_params": {
+      "redirect_uri": "https://${HOSTNAME}",
+      "redirect_name": "homepage."
+    },
+    "scopes": "openid email profile urn:globus:auth:scope:groups.api.globus.org:view_my_groups_and_memberships",
+    "accepted_scopes": [
+      {
+        "scope": "https://auth.globus.org/scopes/3ba21deb-66d8-482d-8a79-9c8ce54f6097/deriva_all",
+        "issuer": "https://auth.globus.org"
+      }
+    ],
+    "discovery_scopes": {
+      "deriva-all": "https://auth.globus.org/scopes/3ba21deb-66d8-482d-8a79-9c8ce54f6097/deriva_all"
+    },
+    "session_augmentation_provider": "credenza.api.session.augmentation.globus_provider:GlobusSessionAugmentationProvider",
+    "client_secret_file": "secrets/globus_client_secret.json"
+  }
+}

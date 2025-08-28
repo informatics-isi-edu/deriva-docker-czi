@@ -1,0 +1,5 @@
+{
+    "database_type": "postgres",
+    "database_dsn": "dbname=webauthn user=webauthn host=${POSTGRES_HOST} password=${POSTGRES_WEBAUTHN_PASSWORD}",
+    "database_max_retries": 5
+}

@@ -1,0 +1,44 @@
+services:
+  deriva-webserver:
+    build: .
+    image: isrddev/deriva-czi:latest
+    container_name: deriva-webserver
+    depends_on:
+      deriva-postgres:
+        condition: service_healthy
+    restart: no
+    env_file:
+      - test.env
+    networks:
+      - internal_network
+    ports:
+      - "${APACHE_HTTPS_PORT}:${APACHE_HTTPS_PORT}"
+    volumes:
+      - www:/var/www
+
+  deriva-postgres:
+    image: postgres:16
+    restart: no
+    container_name: ${POSTGRES_HOST}
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - internal_network
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "su - postgres -c 'pg_isready -U postgres'"]
+      interval: 5s
+      timeout: 5s
+      retries: 6
+
+volumes:
+  www:
+  pgdata:
+
+networks:
+  internal_network:
+    driver: bridge

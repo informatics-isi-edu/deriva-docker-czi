@@ -1,0 +1,72 @@
+{
+    "registry": {
+        "type": "postgres",
+        "dsn": "dbname=ermrest host=${POSTGRES_HOST}",
+        "acls": {
+            "create_catalog_permit": [
+                "${ERMREST_ADMIN_GROUP}"
+            ]
+        }
+    },
+
+    "catalog_factory": {
+        "type": "postgres",
+        "dsn": "dbname=ermrest host=${POSTGRES_HOST}",
+        "_comment": "Postgres template params are based on libpq args (e.g., host, user, password)]",
+        "template": {
+            "type": "postgres",
+            "host": "${POSTGRES_HOST}",
+            "dbname": "PROVIDED BY FACTORY"
+        }
+    },
+
+    "column_types": {
+        "boolean": { "aliases": [ "bool" ] },
+        "date": null,
+        "ermrest_rid": null,
+        "ermrest_rcb": null,
+        "ermrest_rmb": null,
+        "ermrest_rct": null,
+        "ermrest_rmt": null,
+        "ermrest_uri": null,
+        "ermrest_curie": null,
+        "float4": { "aliases": [ "real" ] },
+        "float8": { "aliases": [ "double precision" ] },
+        "int2": { "aliases": [ "smallint" ] },
+        "int4": { "aliases": [ "integer", "int" ] },
+        "int8": { "aliases": [ "bigint" ] },
+        "interval": null,
+        "longtext": null,
+        "markdown": null,
+        "color_rgb_hex": null,
+        "gene_sequence": null,
+        "serial2": { "aliases": [ "smallserial" ] },
+        "serial4": { "aliases": [ "serial" ] },
+        "serial8": { "aliases": [ "bigserial" ] },
+        "text": { "aliases": [ "character varying" ] },
+        "timestamptz": { "aliases": [ "timestamp with time zone" ] },
+        "timestamp": { "aliases": [ "timestamp without time zone" ] },
+        "timetz": { "aliases": [ "time with time zone" ] },
+        "time": { "aliases": [ "time without time zone" ] },
+        "uuid": null,
+        "json": null,
+        "jsonb": null
+    },
+
+    "column_types_readonly": {
+        "oid": null,
+        "json": null,
+        "numeric": null,
+        "text": {
+            "aliases": [ "char", "bpchar", "varchar" ],
+            "regexps": [ "(text|character)( +varying)?( *[(][0-9]+[)])?$" ]
+        },
+        "tstzrange": null
+    },
+    "webauthn_proxy_config": {
+        "session_host": "localhost"
+    },
+    "textfacet_policy": false,
+    "require_primary_keys": true,
+    "default_limit" : 100
+}
