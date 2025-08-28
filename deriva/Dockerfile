@@ -98,9 +98,9 @@ RUN a2enmod ssl wsgi rewrite headers remoteip usertrack deflate http2 unique_id 
     rm -f /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-enabled/000-default.conf && \
     ln -s /etc/apache2/conf-enabled /etc/apache2/conf.d
 
-# Entrypoint and HTTPS port
+# Entrypoint
 COPY entrypoint.sh /opt/entrypoint.sh
 RUN chmod +x /opt/entrypoint.sh
-
 ENTRYPOINT ["/opt/entrypoint.sh"]
+
 CMD ["apachectl", "-D", "FOREGROUND"]
